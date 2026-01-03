@@ -1,0 +1,1 @@
+[21-Dec-2025 18:56:43 UTC] PHP Fatal error:  Access level to App\Http\Controllers\Admin\UserCrudController::setupListOperation() must be public (as in class Backpack\PermissionManager\app\Http\Controllers\UserCrudController) in /home/portalpifco/portal/app/Http/Controllers/Admin/UserCrudController.php on line 9
