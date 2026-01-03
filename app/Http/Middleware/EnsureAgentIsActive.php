@@ -19,7 +19,7 @@ public function handle($request, Closure $next)
             return redirect()->route('verification.notice');
         }
 
-        if (! $user->approved) {
+        if (! $user->is_approved) {
             auth()->logout();
             return redirect('/login')
                 ->withErrors(['email' => 'Your account is awaiting admin approval.']);
