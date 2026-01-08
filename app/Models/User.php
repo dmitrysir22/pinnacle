@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use App\Notifications\AgentResetPasswordNotification;
 
 class User extends Authenticatable implements MustVerifyEmailContract
 {
@@ -25,6 +26,10 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'email',
         'password',
         'is_approved',
+		'email_verified_at' ,
+		'agent_id',
+		'access_level'
+		
     ];
 
     protected $hidden = [
@@ -62,4 +67,22 @@ class User extends Authenticatable implements MustVerifyEmailContract
         return ! $this->otp_last_sent_at ||
             now()->diffInSeconds($this->otp_last_sent_at) >= 60;
     }
+	
+    public function agent()
+    {
+      return $this->belongsTo(Agent::class);
+    }	
+
+public function sendPasswordResetNotification($token)
+{
+    // Только для агентов
+    if ($this->isAgent()) {
+        $this->notify(new AgentResetPasswordNotification($token));
+        return;
+    }
+
+    // fallback (на будущее)
+    parent::sendPasswordResetNotification($token);
+}
+
 }

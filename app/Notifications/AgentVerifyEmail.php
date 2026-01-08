@@ -23,4 +23,15 @@ class AgentVerifyEmail extends VerifyEmail
             ]
         );
     }
+	
+public function toMail($notifiable)
+{
+    return (new MailMessage)
+        ->subject('Verify Your Email – Pinnacle International Freight | Agent Portal')
+        ->markdown('emails.agent.verify', [
+            'url'  => $this->verificationUrl($notifiable),
+            'user' => $notifiable,
+        ]);
+}
+	
 }

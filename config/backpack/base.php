@@ -172,6 +172,11 @@ return [
     // By wrapping in a database transaction you ensure that either all queries went ok, or if some failed the whole process
     // is rolled back and considered failed. This is a good setting for data integrity.
     'useDatabaseTransactions' => false,
+	
+	
+	'project_name' => 'My Admin',
+	'project_logo' => '<b>My</b> Admin',
+
 
     /*
     |--------------------------------------------------------------------------

@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\AgentVerifyEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use App\Notifications\NewAgentRegistered;
+use Illuminate\Support\Facades\Notification;
 
 class AgentRegisterController extends Controller
 {
@@ -32,7 +35,23 @@ class AgentRegisterController extends Controller
 
         // assign Agent role
         $user->assignRole('AgentUser');
+		
+   try {
         $user->notify(new AgentVerifyEmail());
+
+        Notification::route('mail', 'hello@onelinedesigns.co.uk')->notify(new NewAgentRegistered($user));		
+    } catch (TransportExceptionInterface $e) {
+
+        // Optional but recommended:
+        // delete user so DB stays clean
+        $user->delete();
+
+        return back()
+            ->withInput()
+            ->withErrors([
+                'email' => 'We could not send a verification email to this address. Please check the email and try again.',
+            ]);
+    }
 
          return view('auth.verify-email', ['email' => $user->email]);
 

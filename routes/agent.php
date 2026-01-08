@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AgentLoginController;
 use App\Http\Controllers\Auth\AgentRegisterController;
+use App\Http\Controllers\Auth\AgentPasswordResetController;
+
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Agent\AgentDashboardController;
+use App\Http\Controllers\Agent\ShipmentController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 /*
@@ -31,6 +35,28 @@ Route::middleware('guest')->group(function () {
         ->name('otp.resend');
 });
 
+
+
+Route::middleware('guest')->group(function () {
+
+    Route::get('/password/reset', 
+        [AgentPasswordResetController::class, 'request']
+    )->name('password.request');
+
+    Route::post('/password/email', 
+        [AgentPasswordResetController::class, 'email']
+    )->name('password.email');
+
+    Route::get('/password/reset/{token}', 
+        [AgentPasswordResetController::class, 'reset']
+    )->name('password.reset');
+
+    Route::post('/password/reset', 
+        [AgentPasswordResetController::class, 'update']
+    )->name('password.update');
+
+});
+
 /*
 |--------------------------------------------------------------------------
 | Email Verification (Agents)
@@ -56,6 +82,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'agent', 'agent.active'])->group(function () {
-    Route::get('/dashboard', fn () => view('agent.dashboard'))
-        ->name('agent.dashboard');
+  Route::get('/dashboard', [AgentDashboardController::class, 'index'])
+    ->name('agent.dashboard');
+  Route::resource('shipments', ShipmentController::class);
+	
+  Route::post('/logout', [AgentDashboardController::class, 'logout'])->name('logout');	
 });
+
+

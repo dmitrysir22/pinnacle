@@ -35,10 +35,11 @@ class AgentOtpNotification extends Notification
 public function toMail($notifiable)
 {
     return (new MailMessage)
-        ->subject('Your login verification code')
-        ->line('Your verification code is:')
-        ->line($notifiable->otp_code)
-        ->line('This code expires in 10 minutes.');
+        ->subject('Your Login Verification Code')
+        ->markdown('emails.agent.otp', [
+            'otp'  => $notifiable->otp_code,
+            'user' => $notifiable,
+        ]);
 }
 
     /**

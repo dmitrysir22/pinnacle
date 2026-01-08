@@ -30,3 +30,5 @@
         </div>
     </div>
 </li>
+
+<x-backpack::menu-item title="Agents" icon="la la-question" :link="backpack_url('agent')" />

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\AgentOtpNotification;
 
 class AgentLoginController extends Controller
 {
@@ -38,10 +39,8 @@ class AgentLoginController extends Controller
         $user->otp_expires_at = now()->addMinutes(10);
         $user->save();
 
-        Mail::raw(
-            "Your login code is: {$user->otp_code}",
-            fn ($m) => $m->to($user->email)->subject('Your login code')
-        );
+        $user->notify(new AgentOtpNotification());
+
 
         Auth::logout();
         session(['otp_user_id' => $user->id]);
