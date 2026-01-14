@@ -18,10 +18,25 @@ class ShipmentController extends Controller
         return view('agent.shipments.index', compact('shipments'));
     }
 
-    public function create()
-    {
-        return view('agent.shipments.create');
+public function create()
+{
+    $user = auth()->user();
+    
+    // Получаем организацию текущего юзера
+    $organization = $user->organization;
+
+    if (!$organization) {
+        abort(403, 'User has no organization assigned');
     }
+
+    // ВАЖНО: Получаем отправителей через связь belongsToMany
+    // Это автоматически сделает JOIN с таблицей organization_shipper
+    $shippers = $organization->shippers()
+                    ->orderBy('name')
+                    ->get();
+
+    return view('agent.shipments.create', compact('shippers'));
+}
 
     public function store(Request $request)
     {
@@ -40,10 +55,26 @@ class ShipmentController extends Controller
 
     public function edit(Shipment $shipment)
     {
+       $user = auth()->user();
+		
         if ($shipment->agent_id !== auth()->user()->agent_id) {
             abort(403);
         }
-        return view('agent.shipments.create', compact('shipment'));
+
+    // Получаем организацию текущего юзера
+    $organization = $user->organization;
+
+    if (!$organization) {
+        abort(403, 'User has no organization assigned');
+    }
+
+    // ВАЖНО: Получаем отправителей через связь belongsToMany
+    // Это автоматически сделает JOIN с таблицей organization_shipper
+    $shippers = $organization->shippers()
+                    ->orderBy('name')
+                    ->get();
+
+        return view('agent.shipments.create', compact('shipment','shippers'));
     }
 
     public function update(Request $request, Shipment $shipment)

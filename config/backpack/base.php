@@ -174,7 +174,7 @@ return [
     'useDatabaseTransactions' => false,
 	
 	
-	'project_name' => 'My Admin',
+	'project_name' => 'Pinnacle International Freight | Agent Portal',
 	'project_logo' => '<b>My</b> Admin',
 
 

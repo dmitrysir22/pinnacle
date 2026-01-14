@@ -27,7 +27,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'password',
         'is_approved',
 		'email_verified_at' ,
-		'agent_id',
+		'organization_id',
 		'access_level'
 		
     ];
@@ -68,10 +68,9 @@ class User extends Authenticatable implements MustVerifyEmailContract
             now()->diffInSeconds($this->otp_last_sent_at) >= 60;
     }
 	
-    public function agent()
-    {
-      return $this->belongsTo(Agent::class);
-    }	
+public function organization() { 
+    return $this->belongsTo(Organization::class, 'organization_id');
+}
 
 public function sendPasswordResetNotification($token)
 {

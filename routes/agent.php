@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AgentPasswordResetController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Agent\AgentDashboardController;
 use App\Http\Controllers\Agent\ShipmentController;
+use App\Http\Controllers\Agent\ShipperRequestController; 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 /*
@@ -85,6 +86,9 @@ Route::middleware(['auth', 'agent', 'agent.active'])->group(function () {
   Route::get('/dashboard', [AgentDashboardController::class, 'index'])
     ->name('agent.dashboard');
   Route::resource('shipments', ShipmentController::class);
+
+  Route::post('/shipper-request/store', [ShipperRequestController::class, 'store'])
+        ->name('shipper-request.store');  
 	
   Route::post('/logout', [AgentDashboardController::class, 'logout'])->name('logout');	
 });

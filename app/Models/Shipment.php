@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shipment extends Model
 {
     protected $fillable = [
-        'agent_id', 'user_id', 'status',
+        'organization_id', 'user_id', 'status',
         
         // References
         'agent_reference', 'shippers_reference', 'mbl',
@@ -39,7 +39,7 @@ class Shipment extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function agent() {
-        return $this->belongsTo(Agent::class);
-    }
+public function organization() {
+    return $this->belongsTo(Organization::class);
+}
 }

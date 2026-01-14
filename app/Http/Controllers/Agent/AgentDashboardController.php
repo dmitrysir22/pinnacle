@@ -17,9 +17,9 @@ public function index()
 {
     $user = Auth::user();
 
-    // Если у пользователя уровень доступа "Full Access" — видит всё от компании (agent_id)
+    // Если у пользователя уровень доступа "Full Access" — видит всё от компании (organization_id)
     // Если "Individual" — только свои (user_id)
-    $query = Shipment::where('agent_id', $user->agent_id);
+    $query = Shipment::where('organization_id', $user->organization_id);
 
     if ($user->access_level === 'individual') {
         $query->where('user_id', $user->id);

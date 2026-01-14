@@ -1,6 +1,15 @@
 <?php
 
 return [
+
+
+
+    // Send admins “Home” to the Backpack dashboard
+    'home_link' => config('backpack.base.route_prefix', 'admin'),
+'project_name' => 'Pinnacle International Freight | Agent Portal',
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Theme Configuration Values

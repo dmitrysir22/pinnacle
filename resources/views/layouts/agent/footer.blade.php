@@ -74,7 +74,7 @@
   
   <!-- Ultra-thin legal bar -->
 <div class="portal-footer__legal">
-  © 2026 Pinnacle International Freight Limited —
+  © {{ date('Y') }} Pinnacle International Freight Limited —
   Unit 1 Swannington Road, Broughton Astley, Leicester, LE9 6TU, UK.
   All rights reserved.
 </div>
@@ -83,7 +83,3 @@
   
 </footer>
 
-<script>
-  // Optional: keep year current
-  document.getElementById("portalFooterYear").textContent = new Date().getFullYear();
-</script>
