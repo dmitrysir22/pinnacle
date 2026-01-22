@@ -88,6 +88,11 @@ if ($user->otp_attempts >= config('otp.max_attempts')) {
         ]);
 
         Auth::login($user);
+		
+		$user->increment('login_count');
+        $user->last_login_at = now();
+        $user->save();
+		
         session()->forget('otp_user_id');
         session()->forget('locked_until');
 

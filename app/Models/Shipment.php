@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait; 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Shipment extends Model
 {
+    use CrudTrait;
+    use HasFactory;
+
     protected $fillable = [
         'organization_id', 'user_id', 'status',
         
@@ -42,4 +47,8 @@ class Shipment extends Model
 public function organization() {
     return $this->belongsTo(Organization::class);
 }
+public function shipper()
+    {
+        return $this->belongsTo(\App\Models\Shipper::class, 'shipper_id');
+    }
 }

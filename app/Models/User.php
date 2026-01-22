@@ -28,7 +28,9 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'is_approved',
 		'email_verified_at' ,
 		'organization_id',
-		'access_level'
+		'access_level',
+		'last_login_at',
+		'login_count'
 		
     ];
 
@@ -41,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
     {
         return [
             'email_verified_at' => 'datetime',
+            'last_login_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

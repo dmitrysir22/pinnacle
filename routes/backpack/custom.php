@@ -20,7 +20,8 @@ Route::group([
     Route::crud('organization', 'OrganizationCrudController');
     Route::crud('shipper-request', 'ShipperRequestCrudController');
     Route::crud('shipper', 'ShipperCrudController');
-
+    Route::crud('shipment', 'ShipmentCrudController');
+    Route::get('shipment/get-shipper-info', 'ShipmentCrudController@getShipperInfo');
 }); // this should be the absolute last line of this file
 
 /**

@@ -20,7 +20,7 @@
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ auth()->user()->name }}</div>
                         <div class="mt-1 small text-muted text-uppercase">
-                            {{ auth()->user()->agent->name ?? 'No Agent' }}
+                            {{ auth()->user()->organization->name ?? 'No Agent' }}
                         </div>
                     </div>
                 </a>

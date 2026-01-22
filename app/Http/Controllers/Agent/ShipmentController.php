@@ -11,11 +11,19 @@ class ShipmentController extends Controller
 {
     public function index()
     {
-        $shipments = Shipment::where('agent_id', Auth::user()->agent_id)
-            ->latest()
-            ->get();
+    $user = Auth::user();
 
-        return view('agent.shipments.index', compact('shipments'));
+    // Если у пользователя уровень доступа "Full Access" — видит всё от компании (organization_id)
+    // Если "Individual" — только свои (user_id)
+    $query = Shipment::where('organization_id', $user->organization_id);
+
+    if ($user->access_level === 'individual') {
+        $query->where('user_id', $user->id);
+    }
+
+    $shipments = $query->latest()->get();
+
+    return view('agent.dashboard', compact('shipments'));
     }
 
 public function create()

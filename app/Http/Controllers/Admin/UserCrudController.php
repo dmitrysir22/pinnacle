@@ -15,6 +15,19 @@ class UserCrudController extends BaseUserCrudController
 		
         parent::setupListOperation();
 
+    $this->crud->addColumn([
+        'name'  => 'last_login_at',
+        'label' => 'Last Login',
+        'type'  => 'datetime',
+        'format'=> 'DD.MM.YYYY HH:mm',
+    ]);
+
+    $this->crud->addColumn([
+        'name'  => 'login_count',
+        'label' => 'Logins',
+        'type'  => 'number',
+    ]);
+	
         $this->crud->addColumn([
             'name'  => 'is_approved',
             'label' => 'Approved',
@@ -27,6 +40,29 @@ class UserCrudController extends BaseUserCrudController
    {
 
 
+$this->crud->modifyField('password', [
+    'hint' => 'Leave blank unless you are manually changing the users password for them.',
+]);
+
+$entry = $this->crud->getCurrentEntry();
+
+$this->crud->addField([
+    'name' => 'last_login_at',
+    'type' => 'custom_html',
+    'value' => 'Last Login: ' . (
+        $entry && $entry->last_login_at
+            ? $entry->last_login_at->format('d.m.Y H:i')
+            : '—'
+    ),
+]);
+
+
+$this->crud->addField([
+    'name'  => 'login_count',
+    'type'  => 'custom_html',
+    'value' => 'Login Count: '.$this->crud->getCurrentEntry()->login_count
+]);
+
 // 2. Получаем ID роли агента для JS
         $agentRole = Role::where('name', 'AgentUser')->first();
         $agentRoleId = $agentRole ? $agentRole->id : 0;
@@ -36,12 +72,15 @@ class UserCrudController extends BaseUserCrudController
             'name'  => 'is_approved',
             'label' => 'Approved',
             'type'  => 'checkbox',
+			'hint' => 'If checked this user will be able to login to the portal. Once checked the system will notify the user by email that their account has been activated. '
+
+
         ]);
 
         // 4. Поля Агента (Добавляем класс 'agent-dependent-field')
         // Этот класс нужен, чтобы JS знал, что скрывать/показывать
 $this->crud->addField([
-    'label'     => "Assign to Organization",
+    'label'     => "Assign to Agent",
     'type'      => 'select',
     'name'      => 'organization_id', // Новое имя колонки
     'entity'    => 'organization',    // Новое имя связи в модели User
@@ -64,61 +103,6 @@ $this->crud->addField([
         'type'  => 'hidden',
     ]);
 	
-$this->crud->addField([
-            'name'  => 'custom_js_logic',
-            'type'  => 'custom_html',
-            'value' => "
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // ID роли агента из PHP
-                        const agentRoleId = '{$agentRoleId}'; 
-                        
-                        // Находим все чекбоксы ролей (в Backpack они обычно name='roles_show[]')
-                        const roleCheckboxes = document.querySelectorAll('input[name=\"roles_show[]\"]');
-                        
-                        // Находим поля, которые нужно прятать (по классу, который мы дали выше)
-                        const agentFields = document.querySelectorAll('.agent-dependent-field');
-
-                        function toggleAgentFields() {
-                            let isAgentSelected = false;
-
-                            // Проверяем, отмечена ли роль AgentUser
-                            roleCheckboxes.forEach(cb => {
-                                if (cb.value == agentRoleId && cb.checked) {
-                                    isAgentSelected = true;
-                                }
-                            });
-
-                            agentFields.forEach(field => {
-                                const input = field.querySelector('select, input');
-                                
-                                if (isAgentSelected) {
-                                    // ПОКАЗАТЬ
-                                    field.style.display = 'block';
-                                    // Сделать обязательным (браузерная проверка)
-                                    if(input) input.setAttribute('required', 'required');
-                                } else {
-                                    // СКРЫТЬ
-                                    field.style.display = 'none';
-                                    // Убрать обязательность, иначе форма не отправится
-                                    if(input) input.removeAttribute('required');
-                                    // Опционально: очистить значение при скрытии
-                                    // if(input) input.value = ''; 
-                                }
-                            });
-                        }
-
-                        // Вешаем обработчик на клики
-                        roleCheckboxes.forEach(cb => {
-                            cb.addEventListener('change', toggleAgentFields);
-                        });
-
-                        // Запускаем один раз при загрузке страницы (для редактирования)
-                        toggleAgentFields();
-                    });
-                </script>
-            "
-        ]);	
    }
 
     public function setupCreateOperation()

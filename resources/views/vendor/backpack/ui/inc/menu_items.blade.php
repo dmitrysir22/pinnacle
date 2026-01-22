@@ -31,6 +31,7 @@
     </div>
 </li>
 
-<x-backpack::menu-item title="Organizations" icon="la la-question" :link="backpack_url('organization')" />
+<x-backpack::menu-item title="Agents" icon="la la-question" :link="backpack_url('organization')" />
+<x-backpack::menu-item title="Shipments" icon="la la-question" :link="backpack_url('shipment')" />
 <x-backpack::menu-item title="CargoWise Shippers" icon="la la-question" :link="backpack_url('shipper')" />
 <x-backpack::menu-item title="Shipper requests" icon="la la-question" :link="backpack_url('shipper-request')" />

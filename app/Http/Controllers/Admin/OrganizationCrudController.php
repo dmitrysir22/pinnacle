@@ -28,7 +28,7 @@ class OrganizationCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Organization::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/organization');
-        CRUD::setEntityNameStrings('organization', 'Organizations');
+        CRUD::setEntityNameStrings('agent', 'Agents');
     }
 
     /**
@@ -40,7 +40,7 @@ class OrganizationCrudController extends CrudController
 protected function setupListOperation()
 {
     CRUD::column('name')->label('Company Name');
-    CRUD::column('code')->label('Organization Code');
+    CRUD::column('code')->label('CargoWise Org Code');
     CRUD::column('created_at')->label('Registered');
 }
 
@@ -65,7 +65,7 @@ protected function setupCreateOperation()
     CRUD::addField([
         'name'  => 'code',
         'type'  => 'text',
-        'label' => 'Organization Code (ID)',
+        'label' => 'CargoWise Org Code',
         'hint'  => 'The unique ID used in XML files (e.g. 902204190)',
     ]);
 }

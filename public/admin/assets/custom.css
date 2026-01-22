@@ -1,0 +1,17 @@
+/* Исправление сетки чекбоксов ролей */
+[bp-field-name="roles,permissions"] .col-sm-4 {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 150px;
+}
+
+/* Стиль для нашей подсказки */
+.role-explanation {
+    background: #f8f9fa;
+    border-left: 4px solid #004085;
+    padding: 10px 15px;
+    margin: 10px 0 20px 0;
+    font-size: 0.85rem;
+    color: #444;
+    border-radius: 0 4px 4px 0;
+}

@@ -17,3 +17,5 @@
 
 @yield('after_styles')
 @stack('after_styles')
+<link rel="stylesheet" href="/admin/assets/custom.css?v={{ filemtime(public_path('admin/assets/custom.css')) }}">
+<script src="/admin/assets/custom.js?v={{ filemtime(public_path('admin/assets/custom.js')) }}"></script>
