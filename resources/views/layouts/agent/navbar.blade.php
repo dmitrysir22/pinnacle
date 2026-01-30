@@ -52,11 +52,11 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ request()->is('*/shippers*') ? 'active' : '' }}">
+             <!--   <li class="nav-item {{ request()->is('*/shippers*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('/shippers/create') }}">
                         <span class="nav-link-title">Add Shipper</span>
                     </a>
-                </li>
+                </li>//-->
             </ul>
         </div>
     </div>

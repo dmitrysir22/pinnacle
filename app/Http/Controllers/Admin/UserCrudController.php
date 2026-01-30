@@ -33,6 +33,34 @@ class UserCrudController extends BaseUserCrudController
             'label' => 'Approved',
             'type'  => 'boolean',
         ]);
+
+$this->crud->addColumn([
+        'label'     => 'Agent',
+        'type'      => 'select',
+        'name'      => 'organization_id', // внешний ключ в таблице users
+        'entity'    => 'organization',    // метод связи в модели User
+        'attribute' => 'name',            // какое поле показывать из таблицы organizations
+        'model'     => "App\Models\Organization", 
+    ]);
+
+
+$this->crud->addColumn([
+        'name'  => 'access_level',
+        'label' => 'Access Permission',
+        'type'  => 'text',
+        // Опционально: можно добавить логику преобразования текста через 'wrapper' 
+        // или просто оставить как есть, если в базе хранится "Full Access" / "Individual"
+        'wrapper' => [
+            'element' => 'span',
+            'class' => function ($crud, $column, $entry, $related_key) {
+                if ($entry->access_level === 'full access') {
+                    return 'badge badge-success'; // Зеленый для Full
+                }
+                return 'badge badge-info'; // Голубой для Individual
+            },
+        ],
+    ]);
+	
     }
 
 
